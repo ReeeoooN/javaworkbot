@@ -1,13 +1,14 @@
+package Telegram;
+
 import Btn.InWorkBtn;
 import Btn.WorkStartBtn;
+import DB.DataBase;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
 import java.util.logging.Logger;
 
@@ -26,23 +27,29 @@ public class Bot extends TelegramLongPollingBot {
             long chatId = update.getCallbackQuery().getMessage().getChatId();
             LOGGER.info("Callback (ID" + update.getCallbackQuery().getMessage().getMessageId() + ")  from @" + update.getCallbackQuery().getFrom().getUserName() + " (" + chatId + ")" + " data: " + data);
             deleteMess(chatId, update.getCallbackQuery().getMessage().getMessageId());
+            DataBase dataBase = new DataBase();
             if (data.equals("startwork")) {
-                sendMess(chatId, "Чатов в работе: ", new InWorkBtn().getInlineBtn());
+                if (dataBase.newWork(chatId)) {
+                    sendMess(chatId, "Обработано чатов: 0 (0 руб.)", new InWorkBtn().getInlineBtn());
+                } else {
+                    sendMess(chatId, "Произошла ошибка, попробуй позже");
+                }
             }
             if (data.equals("endwork")) {
                 sendMess(chatId, "Молодец, отработал, заработано ", new WorkStartBtn().getInlineBtn());
             }
             if (data.equals("1chat") || data.equals("2chats") || data.equals("3chats")) {
-                sendMess(chatId, "Чатов в работе: ", new InWorkBtn().getInlineBtn());
+
+                sendMess(chatId, dataBase.addChat(Character.getNumericValue(data.toCharArray()[0])), new InWorkBtn().getInlineBtn());
             }
             if (data.equals("stats")) {
-                sendMess(chatId, "Статистика", new WorkStartBtn().getInlineBtn());
+                sendMess(chatId, dataBase.getStat(chatId), new WorkStartBtn().getInlineBtn());
             }
 
         }
     }
     public void  sendMess (long chatId, String text) {
-        LOGGER.info("Send mess to " + chatId + " text: " + text);
+        LOGGER.info("Send mess to " + chatId);
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(text);
@@ -53,7 +60,7 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
     public void sendMess (long chatId, String text, InlineKeyboardMarkup markup) {
-        LOGGER.info("Send mess to " + chatId + " text: " + text + " with keyboard");
+        LOGGER.info("Send mess to " + chatId + " with keyboard");
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(text);
