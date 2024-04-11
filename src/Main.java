@@ -3,13 +3,18 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.BotSession;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+import java.util.logging.Logger;
+
 public class Main {
     public static void main(String[] args) {
+        final Logger LOGGER = Logger.getLogger(Main.class.getName());
         try {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
-            telegramBotsApi.registerBot(new Bot());
+            Bot bot = new Bot();
+            telegramBotsApi.registerBot(bot);
+            LOGGER.info("Start bot " + bot.getBotUsername());
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
         }
     }
 }

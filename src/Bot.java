@@ -9,18 +9,22 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession;
 
+import java.util.logging.Logger;
+
 public class Bot extends TelegramLongPollingBot {
+    private static final Logger LOGGER = Logger.getLogger(Bot.class.getName());
     private final String botToken = new ApiKey().getKey();
     private final String botName = "WorkStat";
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText() && update.getMessage().getText().equals("/start")) {
             long chatId = update.getMessage().getChatId();
-            System.out.println("Message from " + chatId + " text: " + update.getMessage().getText());
+            LOGGER.info("Message (ID" + update.getMessage().getMessageId() + ") from @" + update.getMessage().getFrom().getUserName() + " (" + chatId + ")" + " text: " + update.getMessage().getText());
             sendMess(chatId, "Привет, работяга, го на сделочку?", new WorkStartBtn().getInlineBtn());
         } else if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
             long chatId = update.getCallbackQuery().getMessage().getChatId();
+            LOGGER.info("Callback (ID" + update.getCallbackQuery().getMessage().getMessageId() + ")  from @" + update.getCallbackQuery().getFrom().getUserName() + " (" + chatId + ")" + " data: " + data);
             deleteMess(chatId, update.getCallbackQuery().getMessage().getMessageId());
             if (data.equals("startwork")) {
                 sendMess(chatId, "Чатов в работе: ", new InWorkBtn().getInlineBtn());
@@ -38,17 +42,18 @@ public class Bot extends TelegramLongPollingBot {
         }
     }
     public void  sendMess (long chatId, String text) {
+        LOGGER.info("Send mess to " + chatId + " text: " + text);
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(text);
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
         }
     }
     public void sendMess (long chatId, String text, InlineKeyboardMarkup markup) {
-        System.out.println("Send mess to " + chatId + " text: " + text);
+        LOGGER.info("Send mess to " + chatId + " text: " + text + " with keyboard");
         SendMessage message = new SendMessage();
         message.setChatId(chatId);
         message.setText(text);
@@ -56,17 +61,18 @@ public class Bot extends TelegramLongPollingBot {
         try {
             execute(message);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
         }
     }
     public void deleteMess (long chatId, int messageId) {
+        LOGGER.info("Delete message " + messageId + " from " + chatId);
         DeleteMessage deleteMessage = new DeleteMessage();
         deleteMessage.setChatId(chatId);
         deleteMessage.setMessageId(messageId);
         try {
             execute(deleteMessage);
         } catch (TelegramApiException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
         }
     }
     @Override
