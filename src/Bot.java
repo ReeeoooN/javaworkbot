@@ -1,3 +1,5 @@
+import Btn.InWorkBtn;
+import Btn.WorkStartBtn;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.TelegramBotsApi;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -15,42 +17,22 @@ public class Bot extends TelegramLongPollingBot {
         if (update.hasMessage() && update.getMessage().hasText() && update.getMessage().getText().equals("/start")) {
             long chatId = update.getMessage().getChatId();
             System.out.println("Message from " + chatId + " text: " + update.getMessage().getText());
-            String[] texts = {"Начать сделку", "Статистика"};
-            String[] callbacks = {"startwork", "stats"};
-            InlineBuilder inlineBuilder = new InlineBuilder(texts, callbacks);
-            InlineKeyboardMarkup keyboard = inlineBuilder.createInlineKeyboard(inlineBuilder.getBtnList(), 2);
-            sendMess(chatId, "Привет, работяга, го на сделочку?", keyboard);
+            sendMess(chatId, "Привет, работяга, го на сделочку?", new WorkStartBtn().getInlineBtn());
         } else if (update.hasCallbackQuery()) {
             String data = update.getCallbackQuery().getData();
             long chatId = update.getCallbackQuery().getMessage().getChatId();
             deleteMess(chatId, update.getCallbackQuery().getMessage().getMessageId());
             if (data.equals("startwork")) {
-                String [] texts = {"1 чат", "2 Чата", "3 Чата", "Завершить сделку"};
-                String [] callbacks = {"1chat", "2chats", "3chats", "endwork"};
-                InlineBuilder inlineBuilder = new InlineBuilder(texts, callbacks);
-                InlineKeyboardMarkup keyboard = inlineBuilder.createInlineKeyboard(inlineBuilder.getBtnList(), 3);
-                sendMess(chatId, "Чатов в работе: ", keyboard);
+                sendMess(chatId, "Чатов в работе: ", new InWorkBtn().getInlineBtn());
             }
             if (data.equals("endwork")) {
-                String[] texts = {"Начать сделку", "Статистика"};
-                String[] callbacks = {"startwork", "stats"};
-                InlineBuilder inlineBuilder = new InlineBuilder(texts, callbacks);
-                InlineKeyboardMarkup keyboard = inlineBuilder.createInlineKeyboard(inlineBuilder.getBtnList(), 2);
-                sendMess(chatId, "Молодец, отработал, заработано ", keyboard);
+                sendMess(chatId, "Молодец, отработал, заработано ", new WorkStartBtn().getInlineBtn());
             }
             if (data.equals("1chat") || data.equals("2chats") || data.equals("3chats")) {
-                String [] texts = {"1 чат", "2 Чата", "3 Чата", "Завершить сделку"};
-                String [] callbacks = {"1chat", "2chats", "3chats", "endwork"};
-                InlineBuilder inlineBuilder = new InlineBuilder(texts, callbacks);
-                InlineKeyboardMarkup keyboard = inlineBuilder.createInlineKeyboard(inlineBuilder.getBtnList(), 3);
-                sendMess(chatId, "Чатов в работе: ", keyboard);
+                sendMess(chatId, "Чатов в работе: ", new InWorkBtn().getInlineBtn());
             }
             if (data.equals("stats")) {
-                String[] texts = {"Начать сделку"};
-                String[] callbacks = {"startwork"};
-                InlineBuilder inlineBuilder = new InlineBuilder(texts, callbacks);
-                InlineKeyboardMarkup keyboard = inlineBuilder.createInlineKeyboard(inlineBuilder.getBtnList(), 1);
-                sendMess(chatId, "Статистика", keyboard);
+                sendMess(chatId, "Статистика", new WorkStartBtn().getInlineBtn());
             }
 
         }
