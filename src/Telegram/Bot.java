@@ -11,11 +11,12 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.logging.Logger;
-
+//Основной класс бота
 public class Bot extends TelegramLongPollingBot {
     private static final Logger LOGGER = Logger.getLogger(Bot.class.getName());
     private final String botToken = new ApiKey().getKey();
     private final String botName = "WorkStat";
+//    Метод, который ловит обновления, полученные от пользователя, и обрабатывает их.
     @Override
     public void onUpdateReceived(Update update) {
         if (update.hasMessage() && update.getMessage().hasText() && update.getMessage().getText().equals("/start")) {
@@ -48,6 +49,7 @@ public class Bot extends TelegramLongPollingBot {
 
         }
     }
+//    Методы отравки сообщений пользователю
     public void  sendMess (long chatId, String text) {
         LOGGER.info("Send mess to " + chatId);
         SendMessage message = new SendMessage();
@@ -71,6 +73,7 @@ public class Bot extends TelegramLongPollingBot {
             LOGGER.severe(e.toString());
         }
     }
+//    Метод удаления сообщений бота, после нажатия на кнопку
     public void deleteMess (long chatId, int messageId) {
         LOGGER.info("Delete message " + messageId + " from " + chatId);
         DeleteMessage deleteMessage = new DeleteMessage();

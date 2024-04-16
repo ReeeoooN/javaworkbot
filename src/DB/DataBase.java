@@ -12,13 +12,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.logging.Logger;
+//Основной класс для взаимодействия с базой данных
 
 public class DataBase  {
     private static final String url = "jdbc:mysql://localhost/workstatdb";
     private static final String user = "root";
     private static final String password = "root";
     private static final Logger LOGGER = Logger.getLogger(DataBase.class.getName());
-
+//    Проверка подключения к БД
     public void connect () {
         try {
             Driver driver = new Driver();
@@ -29,6 +30,7 @@ public class DataBase  {
             LOGGER.severe("Connection failed... " + e);
         }
     }
+//    Создание новой сделки в боте
     public Boolean newWork (long chatId) {
         try {
             Driver driver = new Driver();
@@ -45,6 +47,7 @@ public class DataBase  {
             return false;
         }
     }
+//    Увеличение колличества чатов в сделке
     public String addChat (int count) {
         try {
             Driver driver = new Driver();
@@ -63,6 +66,7 @@ public class DataBase  {
             return "Произошла ошибка, попробуй позже";
         }
     }
+//    Вывод статистики сделок
     public String getStat (long chatId) {
         StringBuilder res = new StringBuilder();
         try {

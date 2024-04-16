@@ -4,7 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 import java.util.ArrayList;
 import java.util.List;
-
+//Метод который конструирует кнопки необходимые для навигации по боту вне сделки
 public class WorkStartBtn extends BtnBody{
 
     public WorkStartBtn () {

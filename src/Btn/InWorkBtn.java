@@ -4,6 +4,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 import java.util.ArrayList;
 import java.util.List;
+//Метод создающий кнопки, которые используются для навигации во время сделки
 
 public class InWorkBtn extends BtnBody{
     public InWorkBtn () {

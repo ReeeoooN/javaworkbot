@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="javaworkbot:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/javaworkbot_jar</output-path>
+    <root id="root">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="javaworkbot" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/mysql-connector-j-8.3.0.jar" path-in-jar="/" />
+      <element id="library" level="project" name="java" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/telegrambots-6.9.7.1-jar-with-dependencies.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

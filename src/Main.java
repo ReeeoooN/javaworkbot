@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 public class Main {
     public static void main(String[] args) {
         final Logger LOGGER = Logger.getLogger(Main.class.getName());
+        //Запуск телеграм бота через библиотеку telegrambots
         try {
             TelegramBotsApi telegramBotsApi = new TelegramBotsApi(DefaultBotSession.class);
             Bot bot = new Bot();

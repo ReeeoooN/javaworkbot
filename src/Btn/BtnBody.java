@@ -6,7 +6,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*Базовый класс родитель для всех Inline кнопок бота, в котором реализован метод возврата кнопок, который используется классами наследниками*/
 public class BtnBody {
     protected List<List<InlineKeyboardButton>> inlineKeyboardMarkup;
 
